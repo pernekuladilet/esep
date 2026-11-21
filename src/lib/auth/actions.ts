@@ -12,12 +12,37 @@ async function siteOrigin() {
   return `${protocol}://${host}`;
 }
 
-type AuthErrorCode = "invalidCredentials" | "emailTaken" | "weakPassword" | "generic";
+type AuthErrorCode =
+  | "invalidCredentials"
+  | "emailTaken"
+  | "weakPassword"
+  | "invalidEmail"
+  | "rateLimited"
+  | "generic";
 
-function mapAuthError(message: string): AuthErrorCode {
-  if (message.includes("already registered")) return "emailTaken";
-  if (message.includes("Invalid login credentials")) return "invalidCredentials";
-  if (message.includes("Password should be at least")) return "weakPassword";
+function mapAuthError(error: { code?: string; message: string }, context: string): AuthErrorCode {
+  if (process.env.NODE_ENV !== "production") {
+    console.error(`[auth] ${context} failed (${error.code ?? "no code"}):`, error.message);
+  }
+
+  switch (error.code) {
+    case "user_already_exists":
+      return "emailTaken";
+    case "invalid_credentials":
+      return "invalidCredentials";
+    case "weak_password":
+      return "weakPassword";
+    case "email_address_invalid":
+    case "validation_failed":
+      return "invalidEmail";
+    case "over_email_send_rate_limit":
+    case "over_request_rate_limit":
+      return "rateLimited";
+  }
+
+  if (error.message.includes("already registered")) return "emailTaken";
+  if (error.message.includes("Invalid login credentials")) return "invalidCredentials";
+  if (error.message.includes("Password should be at least")) return "weakPassword";
   return "generic";
 }
 
@@ -41,7 +66,7 @@ export async function signUp(formData: FormData) {
   });
 
   if (error) {
-    redirect({ href: `/signup?error=${mapAuthError(error.message)}`, locale });
+    redirect({ href: `/signup?error=${mapAuthError(error, "signUp")}`, locale });
   }
 
   if (data.session) {
@@ -63,7 +88,7 @@ export async function signIn(formData: FormData) {
   if (error) {
     const nextParam = next ? `&next=${encodeURIComponent(next)}` : "";
     redirect({
-      href: `/login?error=${mapAuthError(error.message)}${nextParam}`,
+      href: `/login?error=${mapAuthError(error, "signIn")}${nextParam}`,
       locale,
     });
   }

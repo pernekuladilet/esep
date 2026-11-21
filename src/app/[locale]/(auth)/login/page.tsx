@@ -13,7 +13,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const ERROR_CODES = ["invalidCredentials", "emailTaken", "weakPassword", "generic"] as const;
+const ERROR_CODES = [
+  "invalidCredentials",
+  "emailTaken",
+  "weakPassword",
+  "invalidEmail",
+  "rateLimited",
+  "generic",
+] as const;
 type ErrorCode = (typeof ERROR_CODES)[number];
 
 type Props = {

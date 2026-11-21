@@ -212,6 +212,8 @@
       "invalidCredentials": "Invalid email or password.",
       "emailTaken": "This email is already registered.",
       "weakPassword": "Password is too short — at least 6 characters.",
+      "invalidEmail": "That email address looks invalid — please check it.",
+      "rateLimited": "Too many attempts. Please wait a bit and try again.",
       "generic": "Something went wrong. Please try again."
     }
   },

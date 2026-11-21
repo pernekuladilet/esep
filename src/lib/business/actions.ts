@@ -38,6 +38,9 @@ export async function createBusiness(formData: FormData) {
   });
 
   if (businessError) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("[business] createBusiness failed:", businessError.message);
+    }
     redirect({ href: "/onboarding?error=1", locale });
   }
 
