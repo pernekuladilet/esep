@@ -1,12 +1,179 @@
 {
   "metadata": {
-    "title": "Esep — coming soon",
-    "description": "Esep is launching soon. We're preparing something new for you."
+    "title": "Esep — bookkeeping and taxes for small businesses in Kazakhstan",
+    "description": "Esep tracks your income, expenses, and taxes. Import your Kaspi or Halyk statement and get reports automatically."
   },
-  "home": {
-    "title": "Esep — coming soon",
-    "description": "We're preparing something new for you. Check back shortly.",
-    "footer": "© {year} Esep. All rights reserved."
+  "common": {
+    "startFree": "Start for free"
+  },
+  "nav": {
+    "how": "How it works",
+    "features": "Features",
+    "audience": "Who it's for",
+    "pricing": "Pricing",
+    "faq": "FAQ"
+  },
+  "hero": {
+    "eyebrow": "Bookkeeping built for Kazakhstani entrepreneurs",
+    "title": "Stop guessing your profit and dreading tax season",
+    "subtitle": "Esep pulls together your income and expenses, calculates your profit, and reminds you what to pay and when. Five minutes a day keeps your business in order.",
+    "ctaSecondary": "See how it works",
+    "note": "Free to start. No card required."
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Three steps to clarity",
+    "steps": [
+      {
+        "title": "Connect your statement",
+        "description": "Upload a Kaspi or Halyk statement, or add transactions manually — whatever suits you."
+      },
+      {
+        "title": "Esep does the math",
+        "description": "Income and expenses are sorted into categories and your profit is calculated automatically."
+      },
+      {
+        "title": "See your profit and taxes",
+        "description": "Your dashboard shows what you earned and how much to set aside for taxes."
+      }
+    ]
+  },
+  "features": {
+    "title": "Everything you need to track your business",
+    "subtitle": "No accountant or spreadsheets required",
+    "items": [
+      {
+        "title": "Transaction tracking",
+        "description": "Income and expenses in one place, on your phone or computer."
+      },
+      {
+        "title": "Bank statement import",
+        "description": "Upload Kaspi and Halyk statements — no manual re-entry."
+      },
+      {
+        "title": "AI categorization",
+        "description": "Transactions are sorted into income and expense categories automatically."
+      },
+      {
+        "title": "Tax calculator",
+        "description": "Automatic tax estimate for the simplified regime or patent."
+      },
+      {
+        "title": "Reminders",
+        "description": "We'll remind you when to file and pay so you never miss a deadline."
+      },
+      {
+        "title": "PDF reports",
+        "description": "A ready-made profit and expense report in one click."
+      },
+      {
+        "title": "Telegram bot",
+        "description": "Log transactions and get summaries right in Telegram."
+      },
+      {
+        "title": "Multiple businesses",
+        "description": "Manage several outlets or sole proprietorships with team access."
+      }
+    ]
+  },
+  "audience": {
+    "title": "Who Esep is for",
+    "subtitle": "Any business that needs to see its real profit",
+    "segments": [
+      {
+        "title": "Retail store",
+        "description": "Track revenue, stock costs, and rent without spreadsheets."
+      },
+      {
+        "title": "Coffee shop",
+        "description": "See daily profit after supplies, payroll, and rent."
+      },
+      {
+        "title": "Beauty salon",
+        "description": "Track stylists' earnings and supply costs in one place."
+      },
+      {
+        "title": "Kaspi seller",
+        "description": "Upload your Kaspi statement and see your net profit instantly."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Simple pricing",
+    "subtitle": "Start free, grow without limits",
+    "popularBadge": "Most popular",
+    "disclaimer": "Prices are preliminary and may change.",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "0 ₸",
+        "period": "",
+        "description": "Try it out and track manually.",
+        "features": [
+          "Manual transaction entry",
+          "Up to 50 transactions a month",
+          "Basic dashboard"
+        ],
+        "cta": "Start for free"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "2,990 ₸",
+        "period": "/mo",
+        "description": "For automating your bookkeeping.",
+        "features": [
+          "Everything in Free, no transaction limit",
+          "Kaspi and Halyk statement import",
+          "AI categorization",
+          "Tax calculator",
+          "Reminders",
+          "PDF reports"
+        ],
+        "cta": "Choose Pro"
+      },
+      "business": {
+        "name": "Business",
+        "price": "5,990 ₸",
+        "period": "/mo",
+        "description": "For multiple outlets and teams.",
+        "features": [
+          "Everything in Pro",
+          "Multiple businesses and staff accounts",
+          "Telegram bot",
+          "Unlimited AI assistant"
+        ],
+        "cta": "Choose Business"
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": [
+      {
+        "question": "Do I need to give access to my bank account?",
+        "answer": "No. You upload a statement file from Kaspi or Halyk yourself — Esep never connects to your account directly or asks for passwords."
+      },
+      {
+        "question": "Does Esep replace an accountant?",
+        "answer": "No, it's a simple tool for estimating profit and tax under the simplified regime or patent. For complex cases you'll still need an accountant."
+      },
+      {
+        "question": "What happens if I go over 50 transactions on Free?",
+        "answer": "New transactions won't be added that month on the Free plan — upgrade to Pro anytime to remove the limit."
+      },
+      {
+        "question": "Can I use it on my phone?",
+        "answer": "Yes, Esep works in your browser on phone and desktop — no app to install."
+      },
+      {
+        "question": "Can I cancel anytime?",
+        "answer": "Yes, anytime — no penalties or hidden terms."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Bookkeeping and taxes for small businesses in Kazakhstan.",
+    "rights": "© {year} Esep. All rights reserved."
   },
   "languageSwitcher": {
     "label": "Language"
