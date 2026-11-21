@@ -31,7 +31,7 @@ export async function Header() {
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild size="sm" className="hidden sm:inline-flex">
-            <a href="#pricing">{tCommon("startFree")}</a>
+            <Link href="/signup">{tCommon("startFree")}</Link>
           </Button>
           <LocaleSwitcher />
         </div>

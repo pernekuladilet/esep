@@ -177,5 +177,72 @@
   },
   "languageSwitcher": {
     "label": "Язык"
+  },
+  "categories": {
+    "revenue": "Выручка",
+    "cogs": "Закуп товара",
+    "rent": "Аренда",
+    "salary": "Зарплата",
+    "utilities": "Коммунальные",
+    "taxes": "Налоги",
+    "advertising": "Реклама",
+    "other": "Прочее"
+  },
+  "auth": {
+    "login": {
+      "title": "Вход",
+      "subtitle": "Войдите, чтобы продолжить работу с Esep",
+      "emailLabel": "Email",
+      "passwordLabel": "Пароль",
+      "submit": "Войти",
+      "noAccount": "Нет аккаунта?",
+      "signupLink": "Зарегистрироваться"
+    },
+    "signup": {
+      "title": "Регистрация",
+      "subtitle": "Создайте аккаунт и начните вести учёт бесплатно",
+      "emailLabel": "Email",
+      "passwordLabel": "Пароль",
+      "submit": "Создать аккаунт",
+      "hasAccount": "Уже есть аккаунт?",
+      "loginLink": "Войти",
+      "checkEmail": "Проверьте почту — мы отправили письмо для подтверждения регистрации."
+    },
+    "errors": {
+      "invalidCredentials": "Неверный email или пароль.",
+      "emailTaken": "Этот email уже зарегистрирован.",
+      "weakPassword": "Пароль слишком короткий — минимум 6 символов.",
+      "generic": "Что-то пошло не так. Попробуйте ещё раз."
+    }
+  },
+  "onboarding": {
+    "title": "Расскажите о бизнесе",
+    "subtitle": "Это займёт меньше минуты",
+    "businessNameLabel": "Название бизнеса",
+    "businessNamePlaceholder": "Например, Кофейня на Абая",
+    "typeLabel": "Тип бизнеса",
+    "typeOptions": {
+      "ip": "ИП",
+      "too": "ТОО"
+    },
+    "taxRegimeLabel": "Налоговый режим",
+    "taxRegimeOptions": {
+      "simplified": "Упрощённая декларация",
+      "patent": "Патент",
+      "retail_tax": "Розничный налог",
+      "general": "Общеустановленный режим"
+    },
+    "languageLabel": "Язык интерфейса",
+    "languageOptions": {
+      "ru": "Русский",
+      "kk": "Қазақша",
+      "en": "English"
+    },
+    "submit": "Продолжить"
+  },
+  "dashboard": {
+    "greeting": "Добро пожаловать, {name}",
+    "subtitle": "Это черновая страница — дальше здесь появится дашборд с операциями и отчётами.",
+    "signOut": "Выйти"
   }
 }

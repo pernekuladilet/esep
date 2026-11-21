@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 
 export async function Hero() {
@@ -19,7 +20,7 @@ export async function Hero() {
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <Button asChild size="lg">
-            <a href="#pricing">{tCommon("startFree")}</a>
+            <Link href="/signup">{tCommon("startFree")}</Link>
           </Button>
           <Button asChild variant="ghost" size="lg">
             <a href="#how">{t("ctaSecondary")}</a>

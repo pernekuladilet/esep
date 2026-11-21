@@ -177,5 +177,72 @@
   },
   "languageSwitcher": {
     "label": "Тіл"
+  },
+  "categories": {
+    "revenue": "Түсім",
+    "cogs": "Тауар сатып алу",
+    "rent": "Жалға алу",
+    "salary": "Жалақы",
+    "utilities": "Коммуналдық",
+    "taxes": "Салықтар",
+    "advertising": "Жарнама",
+    "other": "Басқа"
+  },
+  "auth": {
+    "login": {
+      "title": "Кіру",
+      "subtitle": "Esep-пен жұмысты жалғастыру үшін кіріңіз",
+      "emailLabel": "Email",
+      "passwordLabel": "Құпия сөз",
+      "submit": "Кіру",
+      "noAccount": "Аккаунтыңыз жоқ па?",
+      "signupLink": "Тіркелу"
+    },
+    "signup": {
+      "title": "Тіркелу",
+      "subtitle": "Аккаунт жасап, есепті тегін жүргізе бастаңыз",
+      "emailLabel": "Email",
+      "passwordLabel": "Құпия сөз",
+      "submit": "Аккаунт жасау",
+      "hasAccount": "Аккаунтыңыз бар ма?",
+      "loginLink": "Кіру",
+      "checkEmail": "Поштаңызды тексеріңіз — тіркеуді растау үшін хат жібердік."
+    },
+    "errors": {
+      "invalidCredentials": "Email немесе құпия сөз қате.",
+      "emailTaken": "Бұл email бұрыннан тіркелген.",
+      "weakPassword": "Құпия сөз тым қысқа — кемінде 6 таңба.",
+      "generic": "Бірдеңе дұрыс болмады. Қайталап көріңіз."
+    }
+  },
+  "onboarding": {
+    "title": "Бизнесіңіз туралы айтып беріңіз",
+    "subtitle": "Бұл бір минуттан аз уақыт алады",
+    "businessNameLabel": "Бизнес атауы",
+    "businessNamePlaceholder": "Мысалы, Абай көшесіндегі кофехана",
+    "typeLabel": "Бизнес түрі",
+    "typeOptions": {
+      "ip": "ЖК",
+      "too": "ЖШС"
+    },
+    "taxRegimeLabel": "Салық режимі",
+    "taxRegimeOptions": {
+      "simplified": "Жеңілдетілген декларация",
+      "patent": "Патент",
+      "retail_tax": "Бөлшек сауда салығы",
+      "general": "Жалпы белгіленген режим"
+    },
+    "languageLabel": "Интерфейс тілі",
+    "languageOptions": {
+      "ru": "Русский",
+      "kk": "Қазақша",
+      "en": "English"
+    },
+    "submit": "Жалғастыру"
+  },
+  "dashboard": {
+    "greeting": "Қош келдіңіз, {name}",
+    "subtitle": "Бұл — алдын ала бет. Операциялар мен есептері бар толық басқару тақтасы кейінірек осында пайда болады.",
+    "signOut": "Шығу"
   }
 }

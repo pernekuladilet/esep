@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Check } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -81,7 +82,7 @@ export async function Pricing() {
                   className="w-full"
                   variant={isPopular ? "default" : "outline"}
                 >
-                  <a href="#pricing">{tier.cta}</a>
+                  <Link href="/signup">{tier.cta}</Link>
                 </Button>
               </CardFooter>
             </Card>

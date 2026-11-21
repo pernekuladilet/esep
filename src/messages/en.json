@@ -177,5 +177,72 @@
   },
   "languageSwitcher": {
     "label": "Language"
+  },
+  "categories": {
+    "revenue": "Revenue",
+    "cogs": "Cost of goods",
+    "rent": "Rent",
+    "salary": "Payroll",
+    "utilities": "Utilities",
+    "taxes": "Taxes",
+    "advertising": "Advertising",
+    "other": "Other"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "subtitle": "Log in to keep working with Esep",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "submit": "Log in",
+      "noAccount": "No account yet?",
+      "signupLink": "Sign up"
+    },
+    "signup": {
+      "title": "Sign up",
+      "subtitle": "Create an account and start tracking your business for free",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in",
+      "checkEmail": "Check your email — we've sent a confirmation link."
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password.",
+      "emailTaken": "This email is already registered.",
+      "weakPassword": "Password is too short — at least 6 characters.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "onboarding": {
+    "title": "Tell us about your business",
+    "subtitle": "This will take less than a minute",
+    "businessNameLabel": "Business name",
+    "businessNamePlaceholder": "e.g. Coffee shop on Abay street",
+    "typeLabel": "Business type",
+    "typeOptions": {
+      "ip": "Sole proprietor (IP)",
+      "too": "LLC (TOO)"
+    },
+    "taxRegimeLabel": "Tax regime",
+    "taxRegimeOptions": {
+      "simplified": "Simplified return",
+      "patent": "Patent",
+      "retail_tax": "Retail tax",
+      "general": "General regime"
+    },
+    "languageLabel": "Interface language",
+    "languageOptions": {
+      "ru": "Русский",
+      "kk": "Қазақша",
+      "en": "English"
+    },
+    "submit": "Continue"
+  },
+  "dashboard": {
+    "greeting": "Welcome, {name}",
+    "subtitle": "This is a placeholder page — the full dashboard with transactions and reports will live here next.",
+    "signOut": "Sign out"
   }
 }
