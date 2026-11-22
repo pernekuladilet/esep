@@ -17,3 +17,22 @@ export function tengeToTiyn(input: string): number | null {
 export function tiynToTengeInput(tiyn: number): string {
   return (tiyn / 100).toFixed(2);
 }
+
+/** Compact axis-tick style formatting: 50000 -> "50K", 1250000 -> "1,3M". */
+export function formatTengeCompact(tiyn: number): string {
+  const tenge = Math.round(tiyn) / 100;
+  const abs = Math.abs(tenge);
+
+  if (abs >= 1_000_000) {
+    const millions = tenge / 1_000_000;
+    const rounded = Math.round(millions * 10) / 10;
+    const text = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+    return `${text.replace(".", ",")}M`;
+  }
+
+  if (abs >= 1_000) {
+    return `${Math.round(tenge / 1000)}K`;
+  }
+
+  return String(Math.round(tenge));
+}

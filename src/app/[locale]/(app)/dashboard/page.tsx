@@ -1,12 +1,15 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { requireBusiness } from "@/lib/business/current";
 import { seedDemoData } from "@/lib/transactions/demo-data";
 import { formatTenge } from "@/lib/format";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DailyChart,
   CategoryPieChart,
+  CATEGORY_COLORS,
   type DailyPoint,
   type CategoryTotal,
 } from "@/components/dashboard/charts";
@@ -18,10 +21,11 @@ type Row = {
   categories: { slug: string } | null;
 };
 
-function monthBounds(offsetMonths: number) {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth() + offsetMonths, 1);
-  const end = new Date(now.getFullYear(), now.getMonth() + offsetMonths + 1, 0);
+type Metric = "income" | "expense" | "profit";
+
+function monthBounds(year: number, month: number) {
+  const start = new Date(year, month, 1);
+  const end = new Date(year, month + 1, 0);
   return { start, end };
 }
 
@@ -34,8 +38,21 @@ function percentChange(current: number, previous: number): number | null {
   return Math.round(((current - previous) / previous) * 100);
 }
 
-export default async function DashboardPage() {
+/** income/profit up and expense down are "good" (green); the reverse is "bad" (red). */
+function changeColorClass(metric: Metric, change: number | null) {
+  if (change === null || change === 0) return "text-muted-foreground";
+  const isGood = metric === "expense" ? change < 0 : change > 0;
+  return isGood ? "text-emerald-600 dark:text-emerald-400" : "text-destructive";
+}
+
+type Props = {
+  searchParams: Promise<{ month?: string }>;
+};
+
+export default async function DashboardPage({ searchParams }: Props) {
+  const { month: monthParam } = await searchParams;
   const { supabase, business } = await requireBusiness();
+  const locale = await getLocale();
   const t = await getTranslations("dashboard");
   const tCategories = await getTranslations("categories");
 
@@ -65,8 +82,38 @@ export default async function DashboardPage() {
     );
   }
 
-  const current = monthBounds(0);
-  const previous = monthBounds(-1);
+  const today = new Date();
+  const realCurrent = { year: today.getFullYear(), month: today.getMonth() };
+
+  let viewed = realCurrent;
+  if (monthParam && /^\d{4}-\d{2}$/.test(monthParam)) {
+    const [y, m] = monthParam.split("-").map(Number);
+    const parsed = { year: y, month: m - 1 };
+    // Never allow navigating past the real current month.
+    viewed =
+      parsed.year > realCurrent.year ||
+      (parsed.year === realCurrent.year && parsed.month > realCurrent.month)
+        ? realCurrent
+        : parsed;
+  }
+
+  const isViewingRealCurrentMonth =
+    viewed.year === realCurrent.year && viewed.month === realCurrent.month;
+
+  const current = monthBounds(viewed.year, viewed.month);
+  const previous = monthBounds(viewed.year, viewed.month - 1);
+
+  // "Same period" comparison: for the ongoing month, only count days elapsed
+  // so far; for a fully past month, that's the whole month either way.
+  const periodDays = isViewingRealCurrentMonth
+    ? today.getDate()
+    : current.end.getDate();
+  const currentPeriodEnd = new Date(viewed.year, viewed.month, periodDays);
+  const previousPeriodEnd = new Date(
+    viewed.year,
+    viewed.month - 1,
+    Math.min(periodDays, previous.end.getDate()),
+  );
 
   const { data } = await supabase
     .from("transactions")
@@ -77,9 +124,11 @@ export default async function DashboardPage() {
 
   const rows = (data ?? []) as unknown as Row[];
 
-  const currentRows = rows.filter((r) => r.date >= iso(current.start) && r.date <= iso(current.end));
+  const currentRows = rows.filter(
+    (r) => r.date >= iso(current.start) && r.date <= iso(currentPeriodEnd),
+  );
   const previousRows = rows.filter(
-    (r) => r.date >= iso(previous.start) && r.date <= iso(previous.end),
+    (r) => r.date >= iso(previous.start) && r.date <= iso(previousPeriodEnd),
   );
 
   const sum = (list: Row[], type: "income" | "expense") =>
@@ -93,13 +142,15 @@ export default async function DashboardPage() {
   const previousExpense = sum(previousRows, "expense");
   const previousProfit = previousIncome - previousExpense;
 
-  const today = new Date();
-  const daysSoFar = Math.min(today.getDate(), current.end.getDate());
+  // Daily series covers every day of the viewed month (not just elapsed days),
+  // so the chart's x-axis is stable regardless of which month is selected.
+  const daysInMonth = current.end.getDate();
   const dailyMap = new Map<string, DailyPoint>();
-  for (let d = 1; d <= daysSoFar; d++) {
+  for (let d = 1; d <= daysInMonth; d++) {
     dailyMap.set(String(d), { day: String(d), income: 0, expense: 0 });
   }
-  for (const row of currentRows) {
+  for (const row of rows) {
+    if (row.date < iso(current.start) || row.date > iso(current.end)) continue;
     const day = String(Number(row.date.slice(8, 10)));
     const point = dailyMap.get(day);
     if (!point) continue;
@@ -130,11 +181,42 @@ export default async function DashboardPage() {
     return `${sign}${change}% ${t("vsLastMonth")}`;
   }
 
+  const monthLabel = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  }).format(current.start);
+
+  const prevMonthParam = `${previous.start.getFullYear()}-${String(previous.start.getMonth() + 1).padStart(2, "0")}`;
+  const nextMonthDate = new Date(viewed.year, viewed.month + 1, 1);
+  const nextMonthParam = `${nextMonthDate.getFullYear()}-${String(nextMonthDate.getMonth() + 1).padStart(2, "0")}`;
+
   return (
     <main className="mx-auto flex max-w-6xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
       <h1 className="text-2xl font-semibold tracking-tight">
         {t("greeting", { name: business.name })}
       </h1>
+
+      <div className="flex items-center justify-center gap-3">
+        <Button asChild variant="ghost" size="icon-sm">
+          <Link href={{ pathname: "/dashboard", query: { month: prevMonthParam } }}>
+            <ChevronLeft className="size-4" aria-hidden="true" />
+          </Link>
+        </Button>
+        <span className="min-w-36 text-center text-sm font-medium capitalize">
+          {monthLabel}
+        </span>
+        {isViewingRealCurrentMonth ? (
+          <Button variant="ghost" size="icon-sm" disabled>
+            <ChevronRight className="size-4" aria-hidden="true" />
+          </Button>
+        ) : (
+          <Button asChild variant="ghost" size="icon-sm">
+            <Link href={{ pathname: "/dashboard", query: { month: nextMonthParam } }}>
+              <ChevronRight className="size-4" aria-hidden="true" />
+            </Link>
+          </Button>
+        )}
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>
@@ -143,7 +225,9 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-semibold">{formatTenge(currentIncome)}</p>
-            <p className="text-xs text-muted-foreground">{changeLabel(incomeChange)}</p>
+            <p className={`text-xs ${changeColorClass("income", incomeChange)}`}>
+              {changeLabel(incomeChange)}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -152,7 +236,9 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-semibold">{formatTenge(currentExpense)}</p>
-            <p className="text-xs text-muted-foreground">{changeLabel(expenseChange)}</p>
+            <p className={`text-xs ${changeColorClass("expense", expenseChange)}`}>
+              {changeLabel(expenseChange)}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -161,7 +247,9 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-semibold text-brand">{formatTenge(currentProfit)}</p>
-            <p className="text-xs text-muted-foreground">{changeLabel(profitChange)}</p>
+            <p className={`text-xs ${changeColorClass("profit", profitChange)}`}>
+              {changeLabel(profitChange)}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -198,13 +286,31 @@ export default async function DashboardPage() {
           {topExpenses.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t("noExpenses")}</p>
           ) : (
-            <ul className="flex flex-col gap-2">
-              {topExpenses.map((item) => (
-                <li key={item.slug} className="flex items-center justify-between text-sm">
-                  <span>{tCategories(item.slug as Parameters<typeof tCategories>[0])}</span>
-                  <span className="font-medium">{formatTenge(item.amount)}</span>
-                </li>
-              ))}
+            <ul className="flex flex-col gap-3">
+              {topExpenses.map((item) => {
+                const share =
+                  currentExpense > 0 ? Math.round((item.amount / currentExpense) * 100) : 0;
+                return (
+                  <li key={item.slug} className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span>{tCategories(item.slug as Parameters<typeof tCategories>[0])}</span>
+                      <span className="font-medium">
+                        {formatTenge(item.amount)}{" "}
+                        <span className="text-muted-foreground">({share}%)</span>
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${share}%`,
+                          backgroundColor: CATEGORY_COLORS[item.slug] ?? "#64748b",
+                        }}
+                      />
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </CardContent>
