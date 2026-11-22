@@ -44,13 +44,14 @@ export async function parseGenericExcel(buffer: Buffer): Promise<ParsedRow[]> {
     if (!date || !amount) return;
 
     const description = (descriptionCol !== -1 ? values[descriptionCol] : "")?.trim() || "—";
+    const type = amount.isIncome ? "income" : "expense";
     rows.push({
       date,
       amountTiyn: amount.tiyn,
-      type: amount.isIncome ? "income" : "expense",
+      type,
       rawOperation: "",
       description,
-      isPersonalLooking: isPersonalLooking(description, ""),
+      isPersonalLooking: isPersonalLooking(description, "", type),
     });
   });
 

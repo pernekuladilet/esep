@@ -41,14 +41,15 @@ export function parseKaspiRows(rows: string[][]): ParsedRow[] {
     const { tiyn, isIncome } = parseKaspiAmount(amountRaw);
     const description = detailsRaw.replace(/\s*\n\s*/g, ", ").trim();
     const isInternal = INTERNAL_OPERATIONS.has(operation);
+    const type = isInternal ? "internal" : isIncome ? "income" : "expense";
 
     return {
       date: parseKaspiDate(dateRaw),
       amountTiyn: tiyn,
-      type: isInternal ? "internal" : isIncome ? "income" : "expense",
+      type,
       rawOperation: operation,
       description,
-      isPersonalLooking: isPersonalLooking(description, operation),
+      isPersonalLooking: isPersonalLooking(description, operation, type),
     };
   });
 }

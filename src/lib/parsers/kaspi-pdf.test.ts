@@ -58,8 +58,18 @@ describe("parseKaspiRows", () => {
     const grocery = rows.find((r) => r.description === "Magnum Cash&Carry");
     expect(grocery?.isPersonalLooking).toBe(false);
 
+    // Income is only "not personal" when it clearly looks like business
+    // revenue — a plain top-up from another bank card doesn't qualify.
     const otherBank = rows.find((r) => r.description === "С карты другого банка");
-    expect(otherBank?.isPersonalLooking).toBe(false);
+    expect(otherBank?.isPersonalLooking).toBe(true);
+  });
+
+  it("hides income by default unless it looks like real business revenue", () => {
+    const personalTopUp = rows.find((r) => r.description === "Асхат М.");
+    expect(personalTopUp?.isPersonalLooking).toBe(true);
+
+    const businessTopUp = rows.find((r) => r.description === "ИП Nurlanov, Kaspi QR");
+    expect(businessTopUp?.isPersonalLooking).toBe(false);
   });
 
   it("keeps duplicate same-day, same-amount rows from the same statement as separate entries", () => {

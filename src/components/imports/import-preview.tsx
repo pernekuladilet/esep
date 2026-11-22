@@ -13,19 +13,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { formatTenge } from "@/lib/format";
 import { SYSTEM_CATEGORY_SLUGS } from "@/lib/categorize/slugs";
 import type { PreviewRow, CategorizationSummary } from "@/lib/imports/types";
 
 type Filter = "all" | "toImport" | "personal" | "duplicates" | "other";
+
+// Shared between the sticky header row and every data row so columns line
+// up exactly; minmax(0, 1fr) on the description column (instead of 1fr) is
+// what lets long text actually truncate instead of forcing the row wider
+// than the viewport.
+const GRID_COLS = "grid grid-cols-[1.5rem_minmax(0,1fr)_6.5rem_11rem] items-center gap-2";
 
 function formatDateLabel(iso: string, locale: string): string {
   const [y, m, d] = iso.split("-").map(Number);
@@ -177,9 +175,9 @@ export function ImportPreview({
   function renderCategoryControl(row: PreviewRow) {
     if (row.type === "internal") return null;
     return (
-      <div className="flex items-center gap-1.5">
+      <div className="flex min-w-0 items-center gap-1.5">
         <select
-          className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm"
+          className="h-8 min-w-0 max-w-[8rem] flex-1 rounded-lg border border-input bg-transparent px-2 text-sm sm:max-w-[9rem]"
           value={row.categorySlug}
           disabled={!row.included}
           onClick={(e) => e.stopPropagation()}
@@ -192,7 +190,7 @@ export function ImportPreview({
           ))}
         </select>
         {row.categorySource && (
-          <Badge variant="ghost" className="text-[10px] text-muted-foreground">
+          <Badge variant="ghost" className="shrink-0 font-semibold tracking-wide text-muted-foreground">
             {t(`source.${row.categorySource}`)}
           </Badge>
         )}
@@ -201,8 +199,8 @@ export function ImportPreview({
   }
 
   return (
-    <div className="flex w-full max-w-4xl flex-col gap-3 pb-24">
-      {/* Sticky summary */}
+    <div className="flex w-full min-w-0 max-w-4xl flex-col gap-3 pb-24">
+      {/* Sticky summary + filters + table header, all pinned together */}
       <div className="sticky top-0 z-10 flex flex-col gap-2 border-b bg-background/95 py-3 backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-xl font-semibold tracking-tight">{t("previewTitle")}</h1>
@@ -216,7 +214,7 @@ export function ImportPreview({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-sm">
           <span className="font-medium">
             {t("summary.selected", { selected: counts.toImport, total: rows.length })}
           </span>
@@ -229,7 +227,7 @@ export function ImportPreview({
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <div className="flex min-w-0 flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span>
             {t("summary.personal")}: {counts.personal}
           </span>
@@ -251,7 +249,7 @@ export function ImportPreview({
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex min-w-0 flex-wrap gap-1.5">
           {filterTabs.map((tab) => (
             <button
               key={tab.key}
@@ -270,7 +268,7 @@ export function ImportPreview({
         </div>
 
         {selected.size > 0 && (
-          <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
             <span>{t("bulk.selectedCount", { count: selected.size })}</span>
             <Select value={bulkCategory} onValueChange={setBulkCategory}>
               <SelectTrigger size="sm">
@@ -292,69 +290,24 @@ export function ImportPreview({
             </Button>
           </div>
         )}
+
+        {/* Column header, desktop only — shown once, not per day group */}
+        <div className={cn(GRID_COLS, "hidden px-1 text-xs font-medium text-muted-foreground sm:grid")}>
+          <span />
+          <span>{tOperations("table.description")}</span>
+          <span className="text-right">{tOperations("table.amount")}</span>
+          <span>{tOperations("table.category")}</span>
+        </div>
       </div>
 
       {groups.length === 0 && (
         <p className="py-8 text-center text-sm text-muted-foreground">{t("filters.noRows")}</p>
       )}
 
-      {/* Desktop table, grouped by day */}
-      <div className="hidden sm:block">
+      {/* Desktop rows, grouped by day */}
+      <div className="hidden min-w-0 sm:flex sm:flex-col sm:gap-4">
         {groups.map(([date, dateRows]) => (
-          <div key={date} className="mb-4">
-            <h2 className="mb-1 px-1 text-sm font-semibold text-muted-foreground">
-              {formatDateLabel(date, locale)}
-            </h2>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-8" />
-                  <TableHead>{tOperations("table.description")}</TableHead>
-                  <TableHead className="text-right">{tOperations("table.amount")}</TableHead>
-                  <TableHead>{tOperations("table.category")}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {dateRows.map((row) => (
-                  <TableRow
-                    key={row.tempId}
-                    onClick={() => row.type !== "internal" && toggleSelected(row.tempId)}
-                    className={cn(
-                      row.type !== "internal" && "cursor-pointer",
-                      selected.has(row.tempId) && "bg-accent",
-                    )}
-                  >
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      <Checkbox
-                        checked={row.included}
-                        disabled={row.type === "internal"}
-                        onCheckedChange={(checked) =>
-                          onUpdateRow(row.tempId, { included: checked === true })
-                        }
-                      />
-                    </TableCell>
-                    <TableCell className="max-w-xs">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="truncate font-medium">{row.description}</span>
-                        {renderBadges(row)}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">{renderAmount(row)}</TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
-                      {renderCategoryControl(row)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        ))}
-      </div>
-
-      {/* Mobile cards, grouped by day */}
-      <div className="flex flex-col gap-4 sm:hidden">
-        {groups.map(([date, dateRows]) => (
-          <div key={date} className="flex flex-col gap-1.5">
+          <div key={date} className="flex min-w-0 flex-col gap-1">
             <h2 className="px-1 text-sm font-semibold text-muted-foreground">
               {formatDateLabel(date, locale)}
             </h2>
@@ -363,12 +316,51 @@ export function ImportPreview({
                 key={row.tempId}
                 onClick={() => row.type !== "internal" && toggleSelected(row.tempId)}
                 className={cn(
-                  "flex flex-col gap-1.5 rounded-lg border px-3 py-2",
+                  GRID_COLS,
+                  "rounded-lg px-1 py-1.5",
+                  row.type !== "internal" && "cursor-pointer hover:bg-muted/50",
+                  selected.has(row.tempId) && "bg-accent",
+                )}
+              >
+                <div onClick={(e) => e.stopPropagation()}>
+                  <Checkbox
+                    checked={row.included}
+                    disabled={row.type === "internal"}
+                    onCheckedChange={(checked) =>
+                      onUpdateRow(row.tempId, { included: checked === true })
+                    }
+                  />
+                </div>
+                <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                  <span className="truncate font-medium">{row.description}</span>
+                  {renderBadges(row)}
+                </div>
+                <div className="text-right">{renderAmount(row)}</div>
+                <div onClick={(e) => e.stopPropagation()}>{renderCategoryControl(row)}</div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile cards, grouped by day */}
+      <div className="flex min-w-0 flex-col gap-4 sm:hidden">
+        {groups.map(([date, dateRows]) => (
+          <div key={date} className="flex min-w-0 flex-col gap-1.5">
+            <h2 className="px-1 text-sm font-semibold text-muted-foreground">
+              {formatDateLabel(date, locale)}
+            </h2>
+            {dateRows.map((row) => (
+              <div
+                key={row.tempId}
+                onClick={() => row.type !== "internal" && toggleSelected(row.tempId)}
+                className={cn(
+                  "flex min-w-0 flex-col gap-1.5 rounded-lg border px-3 py-2",
                   row.type !== "internal" && "cursor-pointer",
                   selected.has(row.tempId) && "bg-accent",
                 )}
               >
-                <div className="flex items-start gap-2">
+                <div className="flex min-w-0 items-start gap-2">
                   <div onClick={(e) => e.stopPropagation()} className="pt-0.5">
                     <Checkbox
                       checked={row.included}
@@ -378,14 +370,16 @@ export function ImportPreview({
                       }
                     />
                   </div>
-                  <div className="flex flex-1 flex-col gap-1">
-                    <div className="flex flex-wrap items-center gap-1.5 text-sm">
-                      <span className="font-medium">{row.description}</span>
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <div className="flex min-w-0 flex-wrap items-center gap-1.5 text-sm">
+                      <span className="truncate font-medium">{row.description}</span>
                       {renderBadges(row)}
                     </div>
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center justify-between gap-2">
                       {renderAmount(row)}
-                      <div onClick={(e) => e.stopPropagation()}>{renderCategoryControl(row)}</div>
+                      <div onClick={(e) => e.stopPropagation()} className="min-w-0">
+                        {renderCategoryControl(row)}
+                      </div>
                     </div>
                   </div>
                 </div>
