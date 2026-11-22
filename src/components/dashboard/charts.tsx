@@ -14,20 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import { formatTenge, formatTengeCompact } from "@/lib/format";
-
-// Brand-teal-led palette: revenue gets the primary brand teal, expense
-// categories are harmonious teal shades plus two restrained accents
-// (amber for taxes, slate neutrals) instead of a clashing rainbow.
-const CATEGORY_COLORS: Record<string, string> = {
-  revenue: "#0f9b8e",
-  cogs: "#0d7d74",
-  rent: "#14b8a6",
-  salary: "#2dd4bf",
-  utilities: "#5eead4",
-  taxes: "#f59e0b",
-  advertising: "#94a3b8",
-  other: "#64748b",
-};
+import { CATEGORY_COLORS } from "@/lib/category-colors";
 
 // Recharts' Tooltip `formatter` prop type is awkward to satisfy exactly;
 // cast our simpler formatter functions to it instead of fighting the generics.
@@ -45,8 +32,8 @@ export function DailyChart({ data }: { data: DailyPoint[] }) {
       <BarChart
         data={data}
         margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-        barGap={1}
-        barCategoryGap="20%"
+        barGap={0}
+        barCategoryGap="10%"
       >
         <CartesianGrid vertical={false} stroke="var(--border)" />
         <XAxis
@@ -81,8 +68,8 @@ export function DailyChart({ data }: { data: DailyPoint[] }) {
             fontSize: 12,
           }}
         />
-        <Bar dataKey="income" fill="var(--brand)" radius={[3, 3, 0, 0]} />
-        <Bar dataKey="expense" fill="var(--destructive)" radius={[3, 3, 0, 0]} />
+        <Bar dataKey="income" fill="var(--brand)" radius={[3, 3, 0, 0]} maxBarSize={14} />
+        <Bar dataKey="expense" fill="var(--destructive)" radius={[3, 3, 0, 0]} maxBarSize={14} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -94,14 +81,16 @@ export function CategoryPieChart({ data }: { data: CategoryTotal[] }) {
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-      <ResponsiveContainer width="100%" height={220} className="mx-auto max-w-[220px] sm:mx-0">
-        <PieChart>
+      <div className="mx-auto shrink-0 sm:mx-0">
+        <PieChart width={200} height={200} margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
           <Pie
             data={data}
             dataKey="amount"
             nameKey="slug"
-            innerRadius={55}
-            outerRadius={90}
+            cx="50%"
+            cy="50%"
+            innerRadius={50}
+            outerRadius={80}
             paddingAngle={2}
           >
             {data.map((entry) => (
@@ -125,7 +114,7 @@ export function CategoryPieChart({ data }: { data: CategoryTotal[] }) {
             }}
           />
         </PieChart>
-      </ResponsiveContainer>
+      </div>
 
       <ul className="flex flex-1 flex-col gap-2 text-sm">
         {data.map((entry) => {
@@ -149,5 +138,3 @@ export function CategoryPieChart({ data }: { data: CategoryTotal[] }) {
     </div>
   );
 }
-
-export { CATEGORY_COLORS };

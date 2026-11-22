@@ -3,13 +3,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { requireBusiness } from "@/lib/business/current";
 import { seedDemoData } from "@/lib/transactions/demo-data";
 import { formatTenge } from "@/lib/format";
+import { CATEGORY_COLORS } from "@/lib/category-colors";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DailyChart,
   CategoryPieChart,
-  CATEGORY_COLORS,
   type DailyPoint,
   type CategoryTotal,
 } from "@/components/dashboard/charts";
@@ -293,7 +293,14 @@ export default async function DashboardPage({ searchParams }: Props) {
                 return (
                   <li key={item.slug} className="flex flex-col gap-1">
                     <div className="flex items-center justify-between text-sm">
-                      <span>{tCategories(item.slug as Parameters<typeof tCategories>[0])}</span>
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="size-2.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: CATEGORY_COLORS[item.slug] ?? "#64748b" }}
+                          aria-hidden="true"
+                        />
+                        {tCategories(item.slug as Parameters<typeof tCategories>[0])}
+                      </span>
                       <span className="font-medium">
                         {formatTenge(item.amount)}{" "}
                         <span className="text-muted-foreground">({share}%)</span>
