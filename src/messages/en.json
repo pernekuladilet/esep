@@ -247,6 +247,7 @@
     "operations": "Operations",
     "taxes": "Taxes",
     "reminders": "Reminders",
+    "assistant": "Assistant",
     "settings": "Settings",
     "signOut": "Sign out"
   },
@@ -460,5 +461,38 @@
       "dueToday": "Today",
       "daysLeft": "{count, plural, one {in # day} other {in # days}}"
     }
+  },
+  "assistant": {
+    "title": "Assistant",
+    "emptyState": "Ask something about your business — like why profit changed or where most of your money goes.",
+    "inputPlaceholder": "Ask about your finances…",
+    "send": "Send",
+    "sending": "Answering…",
+    "disclaimer": "This is not professional financial or tax advice.",
+    "notConfigured": "The assistant isn't set up yet — contact an administrator.",
+    "limitReached": "Daily message limit reached. Try again tomorrow or upgrade your plan.",
+    "genericError": "Couldn't get a reply. Please try again.",
+    "period": {
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "last3": "Last 3 months",
+      "last6": "Last 6 months",
+      "thisYear": "This year"
+    },
+    "usage": {
+      "count": "{used} of {limit} today",
+      "unlimited": "Unlimited"
+    },
+    "suggestions": {
+      "whyProfitDown": "Why did profit drop?",
+      "topSpending": "What am I spending the most on?",
+      "taxToSetAside": "How much tax should I set aside?",
+      "whereToSave": "Where can I save money?"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page doesn't exist or has moved.",
+    "backLink": "Back to home"
   }
 }

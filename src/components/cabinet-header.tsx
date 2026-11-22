@@ -13,6 +13,7 @@ export async function CabinetHeader({ businessName }: { businessName: string }) 
     { href: "/operations", label: t("operations") },
     { href: "/taxes", label: t("taxes") },
     { href: "/reminders", label: t("reminders") },
+    { href: "/assistant", label: t("assistant") },
     { href: "/settings", label: t("settings") },
   ];
 
@@ -43,9 +44,9 @@ export async function CabinetHeader({ businessName }: { businessName: string }) 
           </form>
         </div>
       </div>
-      <nav className="flex items-center gap-4 border-t px-4 py-2 text-sm font-medium text-muted-foreground md:hidden">
+      <nav className="flex items-center gap-4 overflow-x-auto border-t px-4 py-2 text-sm font-medium text-nowrap text-muted-foreground md:hidden">
         {links.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:text-foreground">
+          <Link key={link.href} href={link.href} className="shrink-0 hover:text-foreground">
             {link.label}
           </Link>
         ))}
