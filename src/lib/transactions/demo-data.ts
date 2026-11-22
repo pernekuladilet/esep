@@ -37,7 +37,7 @@ export async function seedDemoData() {
         category_id: categoryId,
         amount: row.amountTiyn,
         description: row.description,
-        source: "manual" as const,
+        source: "demo" as const,
       };
     })
     .filter((row): row is NonNullable<typeof row> => row !== null);
@@ -48,4 +48,21 @@ export async function seedDemoData() {
   }
 
   redirect({ href: "/dashboard", locale });
+}
+
+export async function deleteDemoData() {
+  const locale = await getLocale();
+  const { supabase, business } = await requireBusiness();
+
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("business_id", business.id)
+    .eq("source", "demo");
+
+  if (error && process.env.NODE_ENV !== "production") {
+    console.error("[transactions] deleteDemoData failed:", error.message);
+  }
+
+  redirect({ href: "/settings?demoDeleted=1", locale });
 }

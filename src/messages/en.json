@@ -275,7 +275,8 @@
       "manual": "Manual",
       "kaspi": "Kaspi",
       "halyk": "Halyk",
-      "csv": "CSV"
+      "csv": "CSV",
+      "demo": "Demo"
     },
     "table": {
       "date": "Date",
@@ -313,7 +314,15 @@
     "subtitle": "Your business details",
     "error": "Check the form fields and try again.",
     "saved": "Changes saved.",
-    "submit": "Save"
+    "submit": "Save",
+    "demoData": {
+      "title": "Demo data",
+      "subtitle": "Sample transactions created by \"Fill with demo data\". They're tagged separately from real transactions.",
+      "deleteButton": "Delete demo data",
+      "deleteConfirm": "Delete all demo transactions for this business? Real transactions won't be affected. This cannot be undone.",
+      "none": "No demo data.",
+      "deleted": "Demo data deleted."
+    }
   },
   "dashboard": {
     "greeting": "Welcome, {name}",
