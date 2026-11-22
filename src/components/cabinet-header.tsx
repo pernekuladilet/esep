@@ -11,6 +11,8 @@ export async function CabinetHeader({ businessName }: { businessName: string }) 
   const links = [
     { href: "/dashboard", label: t("dashboard") },
     { href: "/operations", label: t("operations") },
+    { href: "/taxes", label: t("taxes") },
+    { href: "/reminders", label: t("reminders") },
     { href: "/settings", label: t("settings") },
   ];
 

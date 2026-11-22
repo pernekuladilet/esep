@@ -2,6 +2,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { requireBusiness } from "@/lib/business/current";
 import { seedDemoData } from "@/lib/transactions/demo-data";
+import { ensureTaxReminders } from "@/lib/reminders/tax-reminders";
+import { daysUntil } from "@/lib/tax/calculate";
 import { formatTenge } from "@/lib/format";
 import { CATEGORY_COLORS } from "@/lib/category-colors";
 import { Link } from "@/i18n/navigation";
@@ -55,6 +57,56 @@ export default async function DashboardPage({ searchParams }: Props) {
   const locale = await getLocale();
   const t = await getTranslations("dashboard");
   const tCategories = await getTranslations("categories");
+  const tReminders = await getTranslations("reminders");
+
+  if (business.tax_regime === "simplified") {
+    await ensureTaxReminders(supabase, business.id);
+  }
+
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const { data: upcomingReminders } = await supabase
+    .from("reminders")
+    .select("id, type, title, date")
+    .eq("business_id", business.id)
+    .gte("date", todayIso)
+    .order("date", { ascending: true })
+    .limit(3);
+
+  function reminderLabel(reminder: { type: string; title: string | null }): string {
+    if (reminder.type === "tax") {
+      return tReminders(`tax.${reminder.title === "pay" ? "pay" : "report"}` as Parameters<typeof tReminders>[0]);
+    }
+    if (reminder.type === "custom") return reminder.title || tReminders("typeOptions.custom");
+    return tReminders(`typeOptions.${reminder.type}` as Parameters<typeof tReminders>[0]);
+  }
+
+  const remindersWidget = (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-base">{tReminders("widget.title")}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!upcomingReminders || upcomingReminders.length === 0 ? (
+          <p className="text-sm text-muted-foreground">{tReminders("widget.empty")}</p>
+        ) : (
+          <ul className="flex flex-col gap-2">
+            {upcomingReminders.map((reminder) => {
+              const days = daysUntil(new Date(reminder.date));
+              return (
+                <li key={reminder.id} className="flex items-center justify-between text-sm">
+                  <span>{reminderLabel(reminder)}</span>
+                  <span className="text-muted-foreground">
+                    {reminder.date} ·{" "}
+                    {days <= 0 ? tReminders("widget.dueToday") : tReminders("widget.daysLeft", { count: days })}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
+  );
 
   const { count: totalCount } = await supabase
     .from("transactions")
@@ -78,6 +130,7 @@ export default async function DashboardPage({ searchParams }: Props) {
             </form>
           </CardContent>
         </Card>
+        {remindersWidget}
       </main>
     );
   }
@@ -322,6 +375,8 @@ export default async function DashboardPage({ searchParams }: Props) {
           )}
         </CardContent>
       </Card>
+
+      {remindersWidget}
     </main>
   );
 }

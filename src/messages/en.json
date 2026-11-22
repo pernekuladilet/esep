@@ -245,6 +245,8 @@
   "cabinetNav": {
     "dashboard": "Dashboard",
     "operations": "Operations",
+    "taxes": "Taxes",
+    "reminders": "Reminders",
     "settings": "Settings",
     "signOut": "Sign out"
   },
@@ -315,6 +317,7 @@
     "error": "Check the form fields and try again.",
     "saved": "Changes saved.",
     "submit": "Save",
+    "taxRateLabel": "Simplified declaration rate",
     "demoData": {
       "title": "Demo data",
       "subtitle": "Sample transactions created by \"Fill with demo data\". They're tagged separately from real transactions.",
@@ -389,6 +392,73 @@
       "categoryPlaceholder": "Choose a category",
       "apply": "Apply",
       "cancel": "Clear selection"
+    }
+  },
+  "taxes": {
+    "title": "Taxes",
+    "onlySimplified": "The calculator is only available for the simplified tax regime right now.",
+    "disclaimer": "This is a reference estimate, not a substitute for an accountant.",
+    "periodLabelH1": "H1 {year}",
+    "periodLabelH2": "H2 {year}",
+    "income": "Period income",
+    "rate": "Rate",
+    "taxDue": "Tax due",
+    "setAsideToday": "Set aside today",
+    "limitProgress": "{year} annual income",
+    "limitWarning80": "You're approaching the simplified-regime income limit.",
+    "limitWarningExceeded": "Annual income has exceeded the simplified-regime limit.",
+    "deadlines": "Upcoming deadlines",
+    "reportDeadline": "File form 910.00",
+    "payDeadline": "Pay the tax",
+    "daysLeft": "{count, plural, one {# day left} other {# days left}}",
+    "daysOverdue": "{count, plural, one {# day overdue} other {# days overdue}}",
+    "dueToday": "Due today"
+  },
+  "reminders": {
+    "title": "Reminders",
+    "addButton": "Add reminder",
+    "emptyTitle": "No reminders yet",
+    "typeOptions": {
+      "tax": "Tax",
+      "rent": "Rent",
+      "salary": "Payroll",
+      "custom": "Custom"
+    },
+    "repeatOptions": {
+      "none": "One-time",
+      "monthly": "Monthly",
+      "semiannual": "Every half-year"
+    },
+    "tax": {
+      "report": "File form 910.00",
+      "pay": "Pay the tax"
+    },
+    "table": {
+      "date": "Date",
+      "type": "Type",
+      "repeat": "Repeat",
+      "remindDaysBefore": "Days before"
+    },
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "deleteConfirm": "Delete this reminder? This cannot be undone.",
+    "form": {
+      "newTitle": "New reminder",
+      "editTitle": "Edit reminder",
+      "typeLabel": "Type",
+      "titleLabel": "Title",
+      "titlePlaceholder": "e.g. Internet bill",
+      "dateLabel": "Date",
+      "repeatLabel": "Repeat",
+      "remindDaysBeforeLabel": "Remind how many days before",
+      "submit": "Save",
+      "error": "Check the form fields and try again."
+    },
+    "widget": {
+      "title": "Upcoming reminders",
+      "empty": "No upcoming reminders.",
+      "dueToday": "Today",
+      "daysLeft": "{count, plural, one {in # day} other {in # days}}"
     }
   }
 }

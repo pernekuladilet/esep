@@ -8,6 +8,7 @@ export type Business = {
   name: string;
   type: string;
   tax_regime: string;
+  tax_rate: number;
 };
 
 /**
@@ -26,7 +27,7 @@ export const requireBusiness = cache(async () => {
 
   const { data: business } = await supabase
     .from("businesses")
-    .select("id, name, type, tax_regime")
+    .select("id, name, type, tax_regime, tax_rate")
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
