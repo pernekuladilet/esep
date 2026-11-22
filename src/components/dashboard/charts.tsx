@@ -27,51 +27,66 @@ export type CategoryTotal = { slug: string; amount: number };
 export function DailyChart({ data }: { data: DailyPoint[] }) {
   const t = useTranslations("dashboard");
 
+  // Recharts shrinks bars to fit whatever width it's given — on a narrow
+  // card with ~30 days that makes them hairline-thin no matter what
+  // barSize/maxBarSize say. Force a real minimum width per day instead and
+  // let the chart scroll horizontally if the card is narrower than that.
+  const minWidth = Math.max(360, data.length * 22);
+
   return (
-    <ResponsiveContainer width="100%" height={280}>
-      <BarChart
-        data={data}
-        margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-        barGap={0}
-        barCategoryGap="10%"
-      >
-        <CartesianGrid vertical={false} stroke="var(--border)" />
-        <XAxis
-          dataKey="day"
-          tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
-          axisLine={false}
-          tickLine={false}
-          interval="preserveStartEnd"
-          minTickGap={10}
-        />
-        <YAxis
-          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-          axisLine={false}
-          tickLine={false}
-          width={44}
-          tickFormatter={(value: number) => formatTengeCompact(value)}
-        />
-        <Tooltip
-          formatter={
-            ((value: number, key: string) => [
-              formatTenge(value),
-              key === "income" ? t("income") : t("expense"),
-            ]) as TooltipFormatter
-          }
-          labelFormatter={
-            ((day: string) => `${t("dayLabel")} ${day}`) as TooltipFormatter
-          }
-          contentStyle={{
-            background: "var(--popover)",
-            border: "1px solid var(--border)",
-            borderRadius: 8,
-            fontSize: 12,
-          }}
-        />
-        <Bar dataKey="income" fill="var(--brand)" radius={[3, 3, 0, 0]} maxBarSize={14} />
-        <Bar dataKey="expense" fill="var(--destructive)" radius={[3, 3, 0, 0]} maxBarSize={14} />
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="overflow-x-auto">
+      <div style={{ minWidth }}>
+        <ResponsiveContainer width="100%" height={280}>
+          <BarChart
+            data={data}
+            margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+            barGap={2}
+            barCategoryGap="12%"
+          >
+            <CartesianGrid vertical={false} stroke="var(--border)" />
+            <XAxis
+              dataKey="day"
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+              axisLine={false}
+              tickLine={false}
+              interval="preserveStartEnd"
+              minTickGap={10}
+            />
+            <YAxis
+              tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+              axisLine={false}
+              tickLine={false}
+              width={44}
+              tickFormatter={(value: number) => formatTengeCompact(value)}
+            />
+            <Tooltip
+              formatter={
+                ((value: number, key: string) => [
+                  formatTenge(value),
+                  key === "income" ? t("income") : t("expense"),
+                ]) as TooltipFormatter
+              }
+              labelFormatter={
+                ((day: string) => `${t("dayLabel")} ${day}`) as TooltipFormatter
+              }
+              contentStyle={{
+                background: "var(--popover)",
+                border: "1px solid var(--border)",
+                borderRadius: 8,
+                fontSize: 12,
+              }}
+            />
+            <Bar dataKey="income" fill="var(--brand)" radius={[3, 3, 0, 0]} maxBarSize={18} />
+            <Bar
+              dataKey="expense"
+              fill="var(--destructive)"
+              radius={[3, 3, 0, 0]}
+              maxBarSize={18}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   );
 }
 
