@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local-only files never meant to be committed (real bank statements, etc.)
+/private/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
