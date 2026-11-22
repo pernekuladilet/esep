@@ -4,7 +4,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Header } from "@/components/header";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -51,10 +50,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <NextIntlClientProvider>
-          <Header />
-          {children}
-        </NextIntlClientProvider>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

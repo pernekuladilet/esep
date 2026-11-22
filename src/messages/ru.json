@@ -242,9 +242,91 @@
     },
     "submit": "Продолжить"
   },
+  "cabinetNav": {
+    "dashboard": "Дашборд",
+    "operations": "Операции",
+    "settings": "Настройки",
+    "signOut": "Выйти"
+  },
+  "operations": {
+    "title": "Операции",
+    "addButton": "Добавить операцию",
+    "emptyTitle": "Пока нет операций",
+    "demoDescription": "Создайте ~60 примеров операций за последние 2 месяца, чтобы увидеть, как работает дашборд.",
+    "demoButton": "Заполнить демо-данными",
+    "noResults": "Ничего не найдено. Попробуйте изменить фильтры.",
+    "filters": {
+      "fromLabel": "С",
+      "toLabel": "По",
+      "typeLabel": "Тип",
+      "categoryLabel": "Категория",
+      "sourceLabel": "Источник",
+      "allTypes": "Все типы",
+      "allCategories": "Все категории",
+      "allSources": "Все источники",
+      "apply": "Применить",
+      "reset": "Сбросить"
+    },
+    "typeOptions": {
+      "income": "Доход",
+      "expense": "Расход"
+    },
+    "sourceOptions": {
+      "manual": "Вручную",
+      "kaspi": "Kaspi",
+      "halyk": "Halyk",
+      "csv": "CSV"
+    },
+    "table": {
+      "date": "Дата",
+      "type": "Тип",
+      "category": "Категория",
+      "description": "Описание",
+      "source": "Источник",
+      "amount": "Сумма"
+    },
+    "editButton": "Изменить",
+    "deleteButton": "Удалить",
+    "deleteConfirm": "Удалить операцию? Это действие нельзя отменить.",
+    "pagination": {
+      "prev": "Назад",
+      "next": "Вперёд",
+      "page": "Стр. {page} из {total}"
+    },
+    "form": {
+      "newTitle": "Новая операция",
+      "editTitle": "Редактировать операцию",
+      "dateLabel": "Дата",
+      "typeLabel": "Тип",
+      "categoryLabel": "Категория",
+      "amountLabel": "Сумма (₸)",
+      "descriptionLabel": "Описание",
+      "descriptionPlaceholder": "Необязательно",
+      "counterpartyLabel": "Контрагент",
+      "counterpartyPlaceholder": "Необязательно",
+      "submit": "Сохранить",
+      "error": "Проверьте поля формы и попробуйте снова."
+    }
+  },
+  "settings": {
+    "title": "Настройки",
+    "subtitle": "Данные вашего бизнеса",
+    "error": "Проверьте поля формы и попробуйте снова.",
+    "saved": "Изменения сохранены.",
+    "submit": "Сохранить"
+  },
   "dashboard": {
     "greeting": "Добро пожаловать, {name}",
-    "subtitle": "Это черновая страница — дальше здесь появится дашборд с операциями и отчётами.",
-    "signOut": "Выйти"
+    "emptyTitle": "Пока нет данных",
+    "emptyDescription": "Добавьте операции вручную или заполните демо-данными, чтобы увидеть дашборд в действии.",
+    "demoButton": "Заполнить демо-данными",
+    "income": "Доход",
+    "expense": "Расход",
+    "profit": "Прибыль",
+    "vsLastMonth": "к прошлому месяцу",
+    "dailyChartTitle": "Доходы и расходы по дням",
+    "categoryChartTitle": "Расходы по категориям",
+    "topExpensesTitle": "Топ расходов",
+    "noExpenses": "Расходов за этот месяц пока нет."
   }
 }

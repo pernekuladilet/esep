@@ -242,9 +242,91 @@
     },
     "submit": "Continue"
   },
+  "cabinetNav": {
+    "dashboard": "Dashboard",
+    "operations": "Operations",
+    "settings": "Settings",
+    "signOut": "Sign out"
+  },
+  "operations": {
+    "title": "Operations",
+    "addButton": "Add operation",
+    "emptyTitle": "No operations yet",
+    "demoDescription": "Create about 60 sample operations from the last 2 months to see the dashboard in action.",
+    "demoButton": "Fill with demo data",
+    "noResults": "Nothing found. Try changing the filters.",
+    "filters": {
+      "fromLabel": "From",
+      "toLabel": "To",
+      "typeLabel": "Type",
+      "categoryLabel": "Category",
+      "sourceLabel": "Source",
+      "allTypes": "All types",
+      "allCategories": "All categories",
+      "allSources": "All sources",
+      "apply": "Apply",
+      "reset": "Reset"
+    },
+    "typeOptions": {
+      "income": "Income",
+      "expense": "Expense"
+    },
+    "sourceOptions": {
+      "manual": "Manual",
+      "kaspi": "Kaspi",
+      "halyk": "Halyk",
+      "csv": "CSV"
+    },
+    "table": {
+      "date": "Date",
+      "type": "Type",
+      "category": "Category",
+      "description": "Description",
+      "source": "Source",
+      "amount": "Amount"
+    },
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "deleteConfirm": "Delete this operation? This cannot be undone.",
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {total}"
+    },
+    "form": {
+      "newTitle": "New operation",
+      "editTitle": "Edit operation",
+      "dateLabel": "Date",
+      "typeLabel": "Type",
+      "categoryLabel": "Category",
+      "amountLabel": "Amount (₸)",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Optional",
+      "counterpartyLabel": "Counterparty",
+      "counterpartyPlaceholder": "Optional",
+      "submit": "Save",
+      "error": "Check the form fields and try again."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Your business details",
+    "error": "Check the form fields and try again.",
+    "saved": "Changes saved.",
+    "submit": "Save"
+  },
   "dashboard": {
     "greeting": "Welcome, {name}",
-    "subtitle": "This is a placeholder page — the full dashboard with transactions and reports will live here next.",
-    "signOut": "Sign out"
+    "emptyTitle": "No data yet",
+    "emptyDescription": "Add operations manually or fill with demo data to see the dashboard in action.",
+    "demoButton": "Fill with demo data",
+    "income": "Income",
+    "expense": "Expense",
+    "profit": "Profit",
+    "vsLastMonth": "vs last month",
+    "dailyChartTitle": "Income and expenses by day",
+    "categoryChartTitle": "Expenses by category",
+    "topExpensesTitle": "Top expenses",
+    "noExpenses": "No expenses this month yet."
   }
 }

@@ -242,9 +242,91 @@
     },
     "submit": "Жалғастыру"
   },
+  "cabinetNav": {
+    "dashboard": "Дашборд",
+    "operations": "Операциялар",
+    "settings": "Параметрлер",
+    "signOut": "Шығу"
+  },
+  "operations": {
+    "title": "Операциялар",
+    "addButton": "Операция қосу",
+    "emptyTitle": "Операциялар әлі жоқ",
+    "demoDescription": "Dashboard қалай жұмыс істейтінін көру үшін соңғы 2 айдың ~60 үлгі операциясын жасаңыз.",
+    "demoButton": "Демо-деректермен толтыру",
+    "noResults": "Ештеңе табылмады. Сүзгілерді өзгертіп көріңіз.",
+    "filters": {
+      "fromLabel": "Бастап",
+      "toLabel": "Дейін",
+      "typeLabel": "Түрі",
+      "categoryLabel": "Санат",
+      "sourceLabel": "Дереккөз",
+      "allTypes": "Барлық түрлер",
+      "allCategories": "Барлық санаттар",
+      "allSources": "Барлық дереккөздер",
+      "apply": "Қолдану",
+      "reset": "Тазарту"
+    },
+    "typeOptions": {
+      "income": "Кіріс",
+      "expense": "Шығыс"
+    },
+    "sourceOptions": {
+      "manual": "Қолмен",
+      "kaspi": "Kaspi",
+      "halyk": "Halyk",
+      "csv": "CSV"
+    },
+    "table": {
+      "date": "Күні",
+      "type": "Түрі",
+      "category": "Санат",
+      "description": "Сипаттама",
+      "source": "Дереккөз",
+      "amount": "Сома"
+    },
+    "editButton": "Өзгерту",
+    "deleteButton": "Жою",
+    "deleteConfirm": "Операцияны жою керек пе? Бұл әрекетті қайтару мүмкін емес.",
+    "pagination": {
+      "prev": "Артқа",
+      "next": "Алға",
+      "page": "{page}/{total} бет"
+    },
+    "form": {
+      "newTitle": "Жаңа операция",
+      "editTitle": "Операцияны өзгерту",
+      "dateLabel": "Күні",
+      "typeLabel": "Түрі",
+      "categoryLabel": "Санат",
+      "amountLabel": "Сома (₸)",
+      "descriptionLabel": "Сипаттама",
+      "descriptionPlaceholder": "Міндетті емес",
+      "counterpartyLabel": "Контрагент",
+      "counterpartyPlaceholder": "Міндетті емес",
+      "submit": "Сақтау",
+      "error": "Форма өрістерін тексеріп, қайталап көріңіз."
+    }
+  },
+  "settings": {
+    "title": "Параметрлер",
+    "subtitle": "Бизнесіңіздің деректері",
+    "error": "Форма өрістерін тексеріп, қайталап көріңіз.",
+    "saved": "Өзгерістер сақталды.",
+    "submit": "Сақтау"
+  },
   "dashboard": {
     "greeting": "Қош келдіңіз, {name}",
-    "subtitle": "Бұл — алдын ала бет. Операциялар мен есептері бар толық басқару тақтасы кейінірек осында пайда болады.",
-    "signOut": "Шығу"
+    "emptyTitle": "Деректер әлі жоқ",
+    "emptyDescription": "Dashboard қалай жұмыс істейтінін көру үшін операцияларды қолмен қосыңыз немесе демо-деректермен толтырыңыз.",
+    "demoButton": "Демо-деректермен толтыру",
+    "income": "Кіріс",
+    "expense": "Шығыс",
+    "profit": "Пайда",
+    "vsLastMonth": "өткен айға қарағанда",
+    "dailyChartTitle": "Күндер бойынша кірістер мен шығыстар",
+    "categoryChartTitle": "Санаттар бойынша шығыстар",
+    "topExpensesTitle": "Топ шығыстар",
+    "noExpenses": "Бұл айда шығыстар әлі жоқ."
   }
 }

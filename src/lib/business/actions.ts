@@ -3,6 +3,7 @@
 import { getLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "@/i18n/navigation";
+import { requireBusiness } from "@/lib/business/current";
 
 const BUSINESS_TYPES = ["ip", "too"] as const;
 const TAX_REGIMES = ["simplified", "patent", "retail_tax", "general"] as const;
@@ -52,4 +53,39 @@ export async function createBusiness(formData: FormData) {
   }
 
   redirect({ href: "/dashboard", locale: language });
+}
+
+export async function updateBusiness(formData: FormData) {
+  const { supabase, userId, business } = await requireBusiness();
+  const locale = await getLocale();
+
+  const name = String(formData.get("name") ?? "").trim();
+  const type = String(formData.get("type") ?? "");
+  const taxRegime = String(formData.get("taxRegime") ?? "");
+  const language = String(formData.get("language") ?? locale);
+
+  if (
+    !name ||
+    !BUSINESS_TYPES.includes(type as (typeof BUSINESS_TYPES)[number]) ||
+    !TAX_REGIMES.includes(taxRegime as (typeof TAX_REGIMES)[number])
+  ) {
+    redirect({ href: "/settings?error=1", locale });
+  }
+
+  const { error: businessError } = await supabase
+    .from("businesses")
+    .update({ name, type, tax_regime: taxRegime })
+    .eq("id", business.id);
+
+  if (businessError && process.env.NODE_ENV !== "production") {
+    console.error("[business] updateBusiness failed:", businessError.message);
+  }
+
+  const nextLocale = LANGUAGES.includes(language as (typeof LANGUAGES)[number])
+    ? language
+    : locale;
+
+  await supabase.from("profiles").update({ language: nextLocale }).eq("id", userId);
+
+  redirect({ href: "/settings?saved=1", locale: nextLocale });
 }
