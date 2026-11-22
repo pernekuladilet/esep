@@ -329,5 +329,27 @@
     "categoryChartTitle": "Expenses by category",
     "topExpensesTitle": "Top expenses",
     "noExpenses": "No expenses this month yet."
+  },
+  "imports": {
+    "title": "Import a statement",
+    "subtitle": "Upload a Kaspi Gold PDF, CSV, or Excel file",
+    "uploadButton": "Upload and parse",
+    "uploading": "Processing the file…",
+    "chooseFile": "No file chosen",
+    "errors": {
+      "no_file": "Choose a file first.",
+      "unsupported_file_type": "PDF, CSV, and Excel (.xlsx) are supported.",
+      "no_rows_found": "Couldn't find any transactions in the file.",
+      "import_record_failed": "Couldn't create the import record. Please try again."
+    },
+    "previewTitle": "Review the transactions before importing",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "internalBadge": "Internal transfer",
+    "duplicateBadge": "Duplicate",
+    "personalBadge": "Looks personal",
+    "confirmButton": "Confirm import",
+    "confirming": "Importing…",
+    "backToOperations": "Back to operations"
   }
 }

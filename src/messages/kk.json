@@ -329,5 +329,27 @@
     "categoryChartTitle": "Санаттар бойынша шығыстар",
     "topExpensesTitle": "Топ шығыстар",
     "noExpenses": "Бұл айда шығыстар әлі жоқ."
+  },
+  "imports": {
+    "title": "Үзінді-көшірмені импорттау",
+    "subtitle": "Kaspi Gold PDF, CSV немесе Excel файлын жүктеңіз",
+    "uploadButton": "Жүктеу және талдау",
+    "uploading": "Файл өңделуде…",
+    "chooseFile": "Файл таңдалмады",
+    "errors": {
+      "no_file": "Алдымен файлды таңдаңыз.",
+      "unsupported_file_type": "PDF, CSV және Excel (.xlsx) форматтары қолдау көрсетіледі.",
+      "no_rows_found": "Файлдан операциялар табылмады.",
+      "import_record_failed": "Импорт жазбасын жасау мүмкін болмады. Қайталап көріңіз."
+    },
+    "previewTitle": "Импорттан бұрын операцияларды тексеріңіз",
+    "selectAll": "Барлығын таңдау",
+    "deselectAll": "Барлығын алып тастау",
+    "internalBadge": "Ішкі аударым",
+    "duplicateBadge": "Қайталама",
+    "personalBadge": "Жеке шығынға ұқсайды",
+    "confirmButton": "Импортты растау",
+    "confirming": "Импортталуда…",
+    "backToOperations": "Операцияларға оралу"
   }
 }

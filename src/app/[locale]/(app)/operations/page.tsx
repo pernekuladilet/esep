@@ -60,6 +60,7 @@ export default async function OperationsPage({
   const params = await searchParams;
   const { supabase, business } = await requireBusiness();
   const t = await getTranslations("operations");
+  const tImports = await getTranslations("imports");
   const tCategories = await getTranslations("categories");
 
   const defaultRange = monthRange(0);
@@ -123,9 +124,14 @@ export default async function OperationsPage({
     <main className="mx-auto flex max-w-6xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-        <Button asChild size="sm">
-          <Link href="/operations/new">{t("addButton")}</Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button asChild size="sm" variant="outline">
+            <Link href="/operations/import">{tImports("title")}</Link>
+          </Button>
+          <Button asChild size="sm">
+            <Link href="/operations/new">{t("addButton")}</Link>
+          </Button>
+        </div>
       </div>
 
       {isEmptyBusiness ? (

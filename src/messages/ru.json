@@ -329,5 +329,27 @@
     "categoryChartTitle": "Расходы по категориям",
     "topExpensesTitle": "Топ расходов",
     "noExpenses": "Расходов за этот месяц пока нет."
+  },
+  "imports": {
+    "title": "Импорт выписки",
+    "subtitle": "Загрузите PDF Kaspi Gold, CSV или Excel",
+    "uploadButton": "Загрузить и разобрать",
+    "uploading": "Обрабатываем файл…",
+    "chooseFile": "Файл не выбран",
+    "errors": {
+      "no_file": "Сначала выберите файл.",
+      "unsupported_file_type": "Поддерживаются PDF, CSV и Excel (.xlsx).",
+      "no_rows_found": "Не удалось найти операции в файле.",
+      "import_record_failed": "Не удалось создать запись импорта. Попробуйте снова."
+    },
+    "previewTitle": "Проверьте операции перед импортом",
+    "selectAll": "Выбрать всё",
+    "deselectAll": "Снять всё",
+    "internalBadge": "Внутренний перевод",
+    "duplicateBadge": "Дубликат",
+    "personalBadge": "Похоже на личное",
+    "confirmButton": "Подтвердить импорт",
+    "confirming": "Импортируем…",
+    "backToOperations": "Назад к операциям"
   }
 }
