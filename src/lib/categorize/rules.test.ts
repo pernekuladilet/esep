@@ -14,6 +14,23 @@ describe("categorizeByRules", () => {
     expect(categorizeByRules("Google Ads кампания")).toBe("advertising");
   });
 
+  it("matches the Kazakh-letter spelling of Qazaqtelecom too", () => {
+    expect(categorizeByRules("Услуги Қазақтелеком по лицевому счету")).toBe("utilities");
+  });
+
+  it("matches common Kazakhstani supermarket, telecom, and marketplace brands", () => {
+    expect(categorizeByRules("Galmart")).toBe("cogs");
+    expect(categorizeByRules("Wildberries")).toBe("cogs");
+    expect(categorizeByRules("Beeline")).toBe("utilities");
+    expect(categorizeByRules("Kcell")).toBe("utilities");
+  });
+
+  it("maps pharmacies, fuel, and ride-hailing to 'other' instead of leaving them unmatched", () => {
+    expect(categorizeByRules("Аптека Europharma")).toBe("other");
+    expect(categorizeByRules("АЗС Helios")).toBe("other");
+    expect(categorizeByRules("Yandex Taxi")).toBe("other");
+  });
+
   it("is case-insensitive", () => {
     expect(categorizeByRules("МАГНУМ")).toBeNull(); // only matches the Latin brand spelling
     expect(categorizeByRules("magnum cash&carry")).toBe("cogs");
