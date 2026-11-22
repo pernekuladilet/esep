@@ -5,9 +5,16 @@ export type PreviewRow = {
   type: "income" | "expense" | "internal";
   description: string;
   categorySlug: string;
+  categorySource: "rule" | "ai" | null;
   isDuplicate: boolean;
   isPersonalLooking: boolean;
   included: boolean;
+};
+
+export type CategorizationSummary = {
+  ruleCount: number;
+  aiCount: number;
+  otherCount: number;
 };
 
 export type ConfirmRow = {

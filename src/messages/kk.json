@@ -350,7 +350,36 @@
     "duplicateBadge": "Қайталама",
     "personalBadge": "Жеке шығынға ұқсайды",
     "confirmButton": "Импортты растау",
+    "confirmButtonCount": "{count} операцияны импорттау",
     "confirming": "Импортталуда…",
-    "backToOperations": "Операцияларға оралу"
+    "backToOperations": "Операцияларға оралу",
+    "summary": {
+      "selected": "{total} ішінен {selected} таңдалды",
+      "income": "Кіріс",
+      "expense": "Шығыс",
+      "personal": "Жеке",
+      "duplicates": "Қайталамалар",
+      "internal": "Ішкі аударымдар",
+      "other": "Басқа",
+      "categorization": "Ережелер: {rules} · ЖИ: {ai} · Басқа: {other}"
+    },
+    "filters": {
+      "all": "Барлығы",
+      "toImport": "Импортқа",
+      "personal": "Жеке",
+      "duplicates": "Қайталамалар",
+      "other": "Басқа",
+      "noRows": "Осы сүзгі бойынша операциялар жоқ."
+    },
+    "source": {
+      "rule": "ереже",
+      "ai": "ЖИ"
+    },
+    "bulk": {
+      "selectedCount": "{count} жол таңдалды",
+      "categoryPlaceholder": "Категорияны таңдаңыз",
+      "apply": "Қолдану",
+      "cancel": "Таңдауды алып тастау"
+    }
   }
 }

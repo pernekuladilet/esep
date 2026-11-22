@@ -6,7 +6,6 @@ import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -14,11 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { formatTenge } from "@/lib/format";
-import { SYSTEM_CATEGORY_SLUGS } from "@/lib/categorize/slugs";
 import { uploadAndParseStatement, confirmImport } from "@/lib/imports/actions";
-import type { PreviewRow } from "@/lib/imports/types";
+import { ImportPreview } from "@/components/imports/import-preview";
+import type { PreviewRow, CategorizationSummary } from "@/lib/imports/types";
 
 const ERROR_KEYS = [
   "no_file",
@@ -30,12 +27,12 @@ const ERROR_KEYS = [
 
 export function ImportFlow() {
   const t = useTranslations("imports");
-  const tCategories = useTranslations("categories");
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
   const [importId, setImportId] = useState<string | null>(null);
   const [rows, setRows] = useState<PreviewRow[] | null>(null);
+  const [summary, setSummary] = useState<CategorizationSummary | null>(null);
   const [errorKey, setErrorKey] = useState<string | null>(null);
 
   function handleUpload(event: FormEvent<HTMLFormElement>) {
@@ -61,6 +58,7 @@ export function ImportFlow() {
       }
       setImportId(result.importId);
       setRows(result.rows);
+      setSummary(result.summary);
     });
   }
 
@@ -71,6 +69,13 @@ export function ImportFlow() {
   function setAllIncluded(included: boolean) {
     setRows(
       (prev) => prev?.map((r) => (r.type === "internal" ? r : { ...r, included })) ?? prev,
+    );
+  }
+
+  function bulkCategory(tempIds: string[], categorySlug: string) {
+    const ids = new Set(tempIds);
+    setRows(
+      (prev) => prev?.map((r) => (ids.has(r.tempId) ? { ...r, categorySlug } : r)) ?? prev,
     );
   }
 
@@ -123,80 +128,15 @@ export function ImportFlow() {
   }
 
   return (
-    <div className="flex w-full max-w-3xl flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-xl font-semibold tracking-tight">{t("previewTitle")}</h1>
-        <div className="flex gap-2">
-          <Button type="button" variant="outline" size="sm" onClick={() => setAllIncluded(true)}>
-            {t("selectAll")}
-          </Button>
-          <Button type="button" variant="outline" size="sm" onClick={() => setAllIncluded(false)}>
-            {t("deselectAll")}
-          </Button>
-        </div>
-      </div>
-
-      <ul className="flex flex-col gap-2">
-        {rows.map((row) => (
-          <li key={row.tempId}>
-            <Card>
-              <CardContent className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-4">
-                <Checkbox
-                  checked={row.included}
-                  disabled={row.type === "internal"}
-                  onCheckedChange={(checked) =>
-                    updateRow(row.tempId, { included: checked === true })
-                  }
-                />
-                <div className="flex flex-1 flex-col gap-1">
-                  <div className="flex flex-wrap items-center gap-2 text-sm">
-                    <span className="text-muted-foreground">{row.date}</span>
-                    <span className="font-medium">{row.description}</span>
-                    {row.type === "internal" && (
-                      <Badge variant="outline">{t("internalBadge")}</Badge>
-                    )}
-                    {row.isDuplicate && <Badge variant="destructive">{t("duplicateBadge")}</Badge>}
-                    {row.isPersonalLooking && row.type !== "internal" && (
-                      <Badge variant="secondary">{t("personalBadge")}</Badge>
-                    )}
-                  </div>
-                  <span
-                    className={
-                      row.type === "income" ? "text-sm font-medium text-brand" : "text-sm font-medium"
-                    }
-                  >
-                    {row.type === "income" ? "+" : row.type === "expense" ? "−" : ""}
-                    {formatTenge(row.amountTiyn)}
-                  </span>
-                </div>
-                {row.type !== "internal" && (
-                  <select
-                    className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm"
-                    value={row.categorySlug}
-                    disabled={!row.included}
-                    onChange={(e) => updateRow(row.tempId, { categorySlug: e.target.value })}
-                  >
-                    {SYSTEM_CATEGORY_SLUGS.map((slug) => (
-                      <option key={slug} value={slug}>
-                        {tCategories(slug)}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </CardContent>
-            </Card>
-          </li>
-        ))}
-      </ul>
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Button type="button" variant="ghost" onClick={() => router.push("/operations")}>
-          {t("backToOperations")}
-        </Button>
-        <Button type="button" onClick={handleConfirm} disabled={isPending}>
-          {isPending ? t("confirming") : t("confirmButton")}
-        </Button>
-      </div>
-    </div>
+    <ImportPreview
+      rows={rows}
+      summary={summary ?? { ruleCount: 0, aiCount: 0, otherCount: 0 }}
+      isPending={isPending}
+      onUpdateRow={updateRow}
+      onBulkCategory={bulkCategory}
+      onSetAllIncluded={setAllIncluded}
+      onConfirm={handleConfirm}
+      onBack={() => router.push("/operations")}
+    />
   );
 }

@@ -350,7 +350,36 @@
     "duplicateBadge": "Duplicate",
     "personalBadge": "Looks personal",
     "confirmButton": "Confirm import",
+    "confirmButtonCount": "Import {count, plural, one {# transaction} other {# transactions}}",
     "confirming": "Importing…",
-    "backToOperations": "Back to operations"
+    "backToOperations": "Back to operations",
+    "summary": {
+      "selected": "{selected} of {total} selected",
+      "income": "Income",
+      "expense": "Expense",
+      "personal": "Personal",
+      "duplicates": "Duplicates",
+      "internal": "Internal transfers",
+      "other": "Other",
+      "categorization": "Rules: {rules} · AI: {ai} · Other: {other}"
+    },
+    "filters": {
+      "all": "All",
+      "toImport": "To import",
+      "personal": "Personal",
+      "duplicates": "Duplicates",
+      "other": "Other",
+      "noRows": "No transactions match this filter."
+    },
+    "source": {
+      "rule": "rule",
+      "ai": "AI"
+    },
+    "bulk": {
+      "selectedCount": "{count, plural, one {# row} other {# rows}} selected",
+      "categoryPlaceholder": "Choose a category",
+      "apply": "Apply",
+      "cancel": "Clear selection"
+    }
   }
 }

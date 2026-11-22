@@ -350,7 +350,36 @@
     "duplicateBadge": "Дубликат",
     "personalBadge": "Похоже на личное",
     "confirmButton": "Подтвердить импорт",
+    "confirmButtonCount": "Импортировать {count, plural, one {# операцию} few {# операции} other {# операций}}",
     "confirming": "Импортируем…",
-    "backToOperations": "Назад к операциям"
+    "backToOperations": "Назад к операциям",
+    "summary": {
+      "selected": "Выбрано {selected} из {total}",
+      "income": "Доход",
+      "expense": "Расход",
+      "personal": "Личное",
+      "duplicates": "Дубли",
+      "internal": "Внутренние переводы",
+      "other": "Прочее",
+      "categorization": "Правила: {rules} · ИИ: {ai} · Прочее: {other}"
+    },
+    "filters": {
+      "all": "Все",
+      "toImport": "К импорту",
+      "personal": "Личное",
+      "duplicates": "Дубли",
+      "other": "Прочее",
+      "noRows": "Нет операций по этому фильтру."
+    },
+    "source": {
+      "rule": "правило",
+      "ai": "ИИ"
+    },
+    "bulk": {
+      "selectedCount": "{count, plural, one {Выбрана # строка} few {Выбрано # строки} other {Выбрано # строк}}",
+      "categoryPlaceholder": "Выбрать категорию",
+      "apply": "Применить",
+      "cancel": "Снять выделение"
+    }
   }
 }

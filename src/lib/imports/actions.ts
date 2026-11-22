@@ -8,10 +8,10 @@ import type { ParsedRow } from "@/lib/parsers/types";
 import { categorizeByRules } from "@/lib/categorize/rules";
 import { categorizeWithClaude } from "@/lib/categorize/claude";
 import { markDuplicates } from "@/lib/imports/dedup";
-import type { PreviewRow, ConfirmRow } from "@/lib/imports/types";
+import type { PreviewRow, ConfirmRow, CategorizationSummary } from "@/lib/imports/types";
 
 export type UploadResult =
-  | { ok: true; importId: string; rows: PreviewRow[] }
+  | { ok: true; importId: string; rows: PreviewRow[]; summary: CategorizationSummary }
   | { ok: false; error: string };
 
 type FileKind = "pdf" | "csv" | "excel";
@@ -101,6 +101,7 @@ export async function uploadAndParseStatement(formData: FormData): Promise<Uploa
 
   // Rules first; whatever's left (and isn't an internal transfer) goes to Claude in one batch.
   const slugs = new Array<string>(parsed.rows.length).fill("");
+  const sources = new Array<"rule" | "ai" | null>(parsed.rows.length).fill(null);
   const unresolved: { index: number; description: string; type: "income" | "expense" }[] = [];
 
   parsed.rows.forEach((row, index) => {
@@ -108,8 +109,10 @@ export async function uploadAndParseStatement(formData: FormData): Promise<Uploa
     const ruleMatch = categorizeByRules(row.description);
     if (ruleMatch) {
       slugs[index] = ruleMatch;
+      sources[index] = "rule";
     } else if (row.type === "income") {
       slugs[index] = "revenue";
+      sources[index] = "rule";
     } else {
       unresolved.push({ index, description: row.description, type: row.type });
     }
@@ -119,8 +122,17 @@ export async function uploadAndParseStatement(formData: FormData): Promise<Uploa
     const claudeResults = await categorizeWithClaude(unresolved);
     for (const [index, slug] of claudeResults) {
       slugs[index] = slug;
+      sources[index] = "ai";
     }
   }
+
+  const summary: CategorizationSummary = { ruleCount: 0, aiCount: 0, otherCount: 0 };
+  parsed.rows.forEach((row, index) => {
+    if (row.type === "internal") return;
+    if (slugs[index] === "other") summary.otherCount += 1;
+    else if (sources[index] === "rule") summary.ruleCount += 1;
+    else if (sources[index] === "ai") summary.aiCount += 1;
+  });
 
   const dates = parsed.rows.map((r) => r.date).sort();
   const { data: existing } = await supabase
@@ -139,12 +151,13 @@ export async function uploadAndParseStatement(formData: FormData): Promise<Uploa
     type: row.type,
     description: row.description,
     categorySlug: slugs[index] || "other",
+    categorySource: sources[index],
     isDuplicate: duplicateFlags[index],
     isPersonalLooking: row.isPersonalLooking,
     included: row.type !== "internal" && !duplicateFlags[index] && !row.isPersonalLooking,
   }));
 
-  return { ok: true, importId: importRow.id as string, rows };
+  return { ok: true, importId: importRow.id as string, rows, summary };
 }
 
 export async function confirmImport(
