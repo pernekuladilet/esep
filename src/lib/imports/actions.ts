@@ -14,25 +14,36 @@ export type UploadResult =
   | { ok: true; importId: string; rows: PreviewRow[] }
   | { ok: false; error: string };
 
-async function parseFile(file: File): Promise<{ rows: ParsedRow[]; bank: "kaspi" | null }> {
-  const name = file.name.toLowerCase();
+type FileKind = "pdf" | "csv" | "excel";
 
-  if (name.endsWith(".pdf")) {
+function detectFileKind(name: string): FileKind | null {
+  const lower = name.toLowerCase();
+  if (lower.endsWith(".pdf")) return "pdf";
+  if (lower.endsWith(".csv")) return "csv";
+  if (lower.endsWith(".xlsx") || lower.endsWith(".xls")) return "excel";
+  return null;
+}
+
+// Separate from the extension check on purpose: a recognized extension that
+// still fails to *parse* (corrupt file, pdfjs hiccup, etc.) must surface as
+// a different error than "wrong file type" — conflating the two previously
+// made every real parsing failure look like an unsupported format.
+async function parseFile(
+  file: File,
+  kind: FileKind,
+): Promise<{ rows: ParsedRow[]; bank: "kaspi" | null }> {
+  if (kind === "pdf") {
     const buffer = Buffer.from(await file.arrayBuffer());
     return { rows: await parseKaspiPdf(buffer), bank: "kaspi" };
   }
 
-  if (name.endsWith(".csv")) {
+  if (kind === "csv") {
     const text = await file.text();
     return { rows: parseGenericCsv(text), bank: null };
   }
 
-  if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    return { rows: await parseGenericExcel(buffer), bank: null };
-  }
-
-  throw new Error("unsupported_file_type");
+  const buffer = Buffer.from(await file.arrayBuffer());
+  return { rows: await parseGenericExcel(buffer), bank: null };
 }
 
 export async function uploadAndParseStatement(formData: FormData): Promise<UploadResult> {
@@ -43,11 +54,19 @@ export async function uploadAndParseStatement(formData: FormData): Promise<Uploa
     return { ok: false, error: "no_file" };
   }
 
+  const kind = detectFileKind(file.name);
+  if (!kind) {
+    return { ok: false, error: "unsupported_file_type" };
+  }
+
   let parsed: { rows: ParsedRow[]; bank: "kaspi" | null };
   try {
-    parsed = await parseFile(file);
-  } catch {
-    return { ok: false, error: "unsupported_file_type" };
+    parsed = await parseFile(file, kind);
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("[imports] parseFile failed:", (error as Error).message, (error as Error).stack);
+    }
+    return { ok: false, error: "parse_failed" };
   }
 
   if (parsed.rows.length === 0) {
