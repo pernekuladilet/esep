@@ -1,11 +1,11 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/auth/actions";
 
 export async function CabinetHeader({ businessName }: { businessName: string }) {
+  const locale = await getLocale();
   const t = await getTranslations("cabinetNav");
 
   const links = [
@@ -37,7 +37,8 @@ export async function CabinetHeader({ businessName }: { businessName: string }) 
             {businessName}
           </span>
           <LocaleSwitcher />
-          <form action={signOut}>
+          <form action="/api/auth/signout" method="POST">
+            <input type="hidden" name="locale" value={locale} />
             <Button type="submit" variant="outline" size="sm">
               {t("signOut")}
             </Button>

@@ -213,6 +213,7 @@
       "emailTaken": "This email is already registered.",
       "weakPassword": "Password is too short — at least 6 characters.",
       "invalidEmail": "That email address looks invalid — please check it.",
+      "emailNotConfirmed": "Please confirm your email via the link we sent before logging in.",
       "rateLimited": "Too many attempts. Please wait a bit and try again.",
       "generic": "Something went wrong. Please try again."
     }
@@ -494,5 +495,10 @@
     "title": "Page not found",
     "description": "This page doesn't exist or has moved.",
     "backLink": "Back to home"
+  },
+  "errorBoundary": {
+    "title": "The site was updated",
+    "description": "Reload the page to get the latest version.",
+    "reloadButton": "Reload"
   }
 }

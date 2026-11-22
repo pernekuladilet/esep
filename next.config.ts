@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
     serverActions: {
       // Default is 1MB — too small for a multi-month bank statement PDF/XLSX.
       bodySizeLimit: "10mb",
+      // Defense in depth for the Server Actions still used elsewhere
+      // (operations, settings, reminders, imports, demo data) — explicitly
+      // trusts the production host for the origin/CSRF check Next runs on
+      // every action request. Add any custom domain here too if one is
+      // added later; Vercel preview URLs (random *.vercel.app subdomains)
+      // aren't covered by this and would need their own entry if used.
+      allowedOrigins: ["esep-one.vercel.app"],
     },
   },
   // pdfjs-dist (used by pdf-parse) loads its worker script via a dynamic

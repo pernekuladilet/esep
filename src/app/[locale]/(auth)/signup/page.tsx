@@ -1,5 +1,4 @@
-import { getTranslations } from "next-intl/server";
-import { signUp } from "@/lib/auth/actions";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +17,7 @@ const ERROR_CODES = [
   "emailTaken",
   "weakPassword",
   "invalidEmail",
+  "emailNotConfirmed",
   "rateLimited",
   "generic",
 ] as const;
@@ -30,6 +30,7 @@ type Props = {
 export default async function SignupPage({ searchParams }: Props) {
   const { error, checkEmail } = await searchParams;
   const errorCode = ERROR_CODES.find((code) => code === error) as ErrorCode | undefined;
+  const locale = await getLocale();
   const t = await getTranslations("auth.signup");
   const tErrors = await getTranslations("auth.errors");
 
@@ -55,13 +56,14 @@ export default async function SignupPage({ searchParams }: Props) {
           <CardTitle className="text-xl">{t("title")}</CardTitle>
           <CardDescription>{t("subtitle")}</CardDescription>
         </CardHeader>
-        <form action={signUp}>
+        <form action="/api/auth/signup" method="POST">
           <CardContent className="flex flex-col gap-4">
             {errorCode && (
               <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {tErrors(errorCode)}
               </p>
             )}
+            <input type="hidden" name="locale" value={locale} />
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="email">{t("emailLabel")}</Label>
               <Input id="email" name="email" type="email" required autoFocus />
